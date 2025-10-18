@@ -12,11 +12,7 @@ class NameValidated extends NameState {
   const NameValidated(this.isValid);
 }
 
-class NameSaved extends NameState {
-  final String name;
-
-  const NameSaved(this.name);
-}
+class NameSaved extends NameState {}
 
 class NameError extends NameState {
   final String message;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:register_app/constans/design_constants.dart';
-import 'package:register_app/constans/strings_manager.dart';
+import 'package:register_app/constants/design_constants.dart';
+import 'package:register_app/constants/strings_manager.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/custom_widgets/custom_button_widget.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';

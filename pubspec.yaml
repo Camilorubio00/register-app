@@ -12,6 +12,9 @@ dependencies:
   flutter_bloc: ^9.1.1
   go_router: ^16.2.5
   get_it: ^8.2.0
+  hive_flutter: ^1.1.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.13
   dartz: ^0.10.1
 
 dev_dependencies:

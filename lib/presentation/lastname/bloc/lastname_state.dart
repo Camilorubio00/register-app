@@ -12,11 +12,7 @@ class LastnameValidated extends LastnameState {
   const LastnameValidated(this.isValid);
 }
 
-class LastnameSaved extends LastnameState {
-  final String lastname;
-
-  const LastnameSaved(this.lastname);
-}
+class LastnameSaved extends LastnameState {}
 
 class LastnameError extends LastnameState {
   final String message;

@@ -1,6 +1,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:register_app/data/datasources/user_local_data_source.dart';
+import 'package:register_app/domain/entities/user_model.dart';
 import 'package:register_app/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -10,18 +11,13 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({ required this.userLocalDataSource });
 
   @override
-  Future<Either<String, void>> saveName({ required String name }) async {
-    return await userLocalDataSource.saveName(name: name);
+  Future<void> saveUser({ required UserModel userModel }) async {
+    return await userLocalDataSource.saveUser(userModel: userModel);
   }
   
   @override
-  Future<Either<String, void>> fetchUser() {
-    return Future.value(Right(null));
-  }
-  
-  @override
-  Future<Either<String, void>> saveLastname({required String lastname}) {
-    return Future.value(Right(null));
+  Future<Either<String, UserModel>> fetchUser() async {
+    return await userLocalDataSource.fetchUser();
   }
 
 }

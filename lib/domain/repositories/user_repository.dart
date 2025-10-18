@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:register_app/domain/entities/user_model.dart';
 
 abstract class UserRepository {
-  Future<Either<String, void>> saveName({ required String name });
-  Future<Either<String, void>> saveLastname({ required String lastname });
-  Future<Either<String, void>> fetchUser();
+  Future<void> saveUser({ required UserModel userModel });
+  Future<Either<String, UserModel>> fetchUser();
 }

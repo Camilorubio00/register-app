@@ -1,17 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:register_app/core/injection_service.dart';
-import 'package:register_app/domain/usecases/fetch_user_use_case.dart';
-import 'package:register_app/domain/usecases/save_name_use_case.dart';
+import 'package:register_app/domain/usecases/update_user_use_case.dart';
 import 'package:register_app/presentation/name/bloc/name_event.dart';
 import 'package:register_app/presentation/name/bloc/name_state.dart';
 
 class NameBloc extends Bloc<NameEvent, NameState> {
-  final SaveNameUseCase _saveNameUseCase;
+  final UpdateUserUseCase _updateUserUseCase;
 
   NameBloc({
-    FetchUserUseCase? fetchUserUseCase,
-    SaveNameUseCase? saveNameUseCase
-  }) : _saveNameUseCase = saveNameUseCase ?? locator<SaveNameUseCase>(), 
+    UpdateUserUseCase? updateUserUseCase
+  }) : _updateUserUseCase = updateUserUseCase ?? locator<UpdateUserUseCase>(),
   super(NameInitial()) {
     on<SaveName>(_onSaveName);
     on<ChangeName>(_onChangeName);
@@ -22,13 +20,8 @@ class NameBloc extends Bloc<NameEvent, NameState> {
     Emitter<NameState> emit,
   ) async {
     emit(NameLoading());
-    
-    final result = await _saveNameUseCase.saveName(name: "");
-    
-    result.fold(
-      (error) => emit(NameError(error)),
-      (_) => emit(NameSaved(event.name)),
-    );
+    await _updateUserUseCase.call(name: event.name);
+    emit(NameSaved());
   }
 
   Future<void> _onChangeName(
