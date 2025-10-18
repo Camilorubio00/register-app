@@ -5,3 +5,5 @@ const String kYourNameText = 'Tu nombre';
 const String kEnterNameTitle = 'Empecemos ¿cuál es tu nombre?';
 const String kEnterLastnameTitle = 'Sigamos ¿cuál es tu apellido?';
 const String kYourLastnameText = 'Tu apellido';
+const String kEnterBirthdayTitle = '¿Cuál es tu fecha de nacimiento?';
+const String kBirthdayText = 'Tu fecha';

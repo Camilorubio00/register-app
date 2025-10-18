@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:register_app/core/injection_service.dart';
 import 'package:register_app/presentation/addresses/addresses_screen.dart';
 import 'package:register_app/presentation/birthday/birthday_screen.dart';
+import 'package:register_app/presentation/birthday/bloc/birthday_bloc.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/lastname/bloc/lastname_bloc.dart';
 import 'package:register_app/presentation/lastname/lastname_screen.dart';
 import 'package:register_app/presentation/name/bloc/name_bloc.dart';
-import 'package:register_app/presentation/name/bloc/name_event.dart';
 import 'package:register_app/presentation/name/name_screen.dart';
 import 'package:register_app/presentation/welcome/welcome_screen.dart';
 
@@ -34,8 +34,11 @@ final router = GoRouter(
         ),
     ),
     GoRoute(
-      path: kBirthdayScreen,
-      builder: (context, state) => BirthdayScreen(),
+        path: kBirthdayScreen,
+        builder: (context, state) => BlocProvider(
+          create: (_) => locator<BirthdayBloc>(),
+          child: const BirthdayScreen(),
+        ),
     ),
     GoRoute(
       path: kAddressesScreen,
