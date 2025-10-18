@@ -7,15 +7,18 @@ part 'address_entity.g.dart';
 @HiveType(typeId: kAddressEntityTypeId) 
 class AddressEntity {
   @HiveField(0)
-  final String? description;
+  final String? id;
   @HiveField(1)
-  final String? country;
+  final String? description;
   @HiveField(2)
-  final String? state;
+  final String? country;
   @HiveField(3)
+  final String? state;
+  @HiveField(4)
   final String? city;
 
   const AddressEntity({
+    this.id,
     this.description,
     this.country,
     this.state,
@@ -26,6 +29,7 @@ class AddressEntity {
     required AddressModel address
   }){
     return AddressEntity(
+        id: address.id,
         description: address.description,
         country: address.country,
         state: address.state,

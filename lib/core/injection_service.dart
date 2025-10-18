@@ -3,7 +3,9 @@ import 'package:register_app/data/datasources/user_local_data_source.dart';
 import 'package:register_app/data/datasources/user_local_data_source_impl.dart';
 import 'package:register_app/data/repositories/user_repository_impl.dart';
 import 'package:register_app/domain/repositories/user_repository.dart';
+import 'package:register_app/domain/usecases/add_temporary_address_use_case.dart';
 import 'package:register_app/domain/usecases/update_user_use_case.dart';
+import 'package:register_app/presentation/addresses/bloc/addresses_bloc.dart';
 import 'package:register_app/presentation/birthday/bloc/birthday_bloc.dart';
 import 'package:register_app/presentation/lastname/bloc/lastname_bloc.dart';
 import 'package:register_app/presentation/name/bloc/name_bloc.dart';
@@ -22,9 +24,11 @@ Future<void> setUpLocator() async {
 
   // UseCases
   locator.registerLazySingleton<UpdateUserUseCase>(() => UpdateUserUseCase(userRepository: locator<UserRepository>()));
+  locator.registerLazySingleton<AddTemporaryAddressUseCase>(() => AddTemporaryAddressUseCase());
 
   // Bloc
   locator.registerFactory<NameBloc>(() => NameBloc());
   locator.registerFactory<LastnameBloc>(() => LastnameBloc());
   locator.registerFactory<BirthdayBloc>(() => BirthdayBloc());
+  locator.registerFactory<AddressesBloc>(() => AddressesBloc());
 }

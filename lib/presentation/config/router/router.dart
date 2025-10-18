@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register_app/core/injection_service.dart';
+import 'package:register_app/presentation/addresses/add_address_screen.dart';
 import 'package:register_app/presentation/addresses/addresses_screen.dart';
+import 'package:register_app/presentation/addresses/bloc/addresses_bloc.dart';
 import 'package:register_app/presentation/birthday/birthday_screen.dart';
 import 'package:register_app/presentation/birthday/bloc/birthday_bloc.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
@@ -14,7 +16,6 @@ import 'package:register_app/presentation/welcome/welcome_screen.dart';
 final router = GoRouter(
   initialLocation: kWelcomeScreen,
   routes: [
-    
     GoRoute(
       path: kWelcomeScreen,
       builder: (context, state) => WelcomeScreen(),
@@ -42,7 +43,17 @@ final router = GoRouter(
     ),
     GoRoute(
       path: kAddressesScreen,
-      builder: (context, state) => AddressesScreen(),
+      builder: (context, state) => BlocProvider(
+        create: (_) => locator<AddressesBloc>(),
+        child: const AddressesScreen(),
+      ),
     ),
+    GoRoute(
+      path: kAddAddressScreen,
+      builder: (context, state) => BlocProvider(
+        create: (_) => locator<AddressesBloc>(),
+        child: const AddAddressScreen(),
+      ),
+    )
   ],
 );

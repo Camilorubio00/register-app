@@ -1,12 +1,14 @@
 import 'package:register_app/data/models/address_entity.dart';
 
 class AddressModel {
+  String? id;
   String? description;
   String? country;
   String? state;
   String? city;
 
   AddressModel({
+    this.id,
     this.description,
     this.country,
     this.state,

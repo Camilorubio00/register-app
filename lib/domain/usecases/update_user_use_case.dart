@@ -1,3 +1,4 @@
+import 'package:register_app/domain/entities/address_model.dart';
 import 'package:register_app/domain/entities/user_model.dart';
 import 'package:register_app/domain/repositories/user_repository.dart';
 
@@ -10,6 +11,7 @@ class UpdateUserUseCase {
     String? name,
     String? lastname,
     DateTime? birthDate,
+    List<AddressModel>? addresses,
   }) async {
     final currentUserResult = await userRepository.fetchUser();
     return await currentUserResult.fold(
@@ -18,7 +20,7 @@ class UpdateUserUseCase {
           name: name,
           lastname: lastname,
           birthDate: birthDate,
-          addresses: List.empty(),
+          addresses: addresses
         );
         return await userRepository.saveUser(userModel: newUser);
       },
