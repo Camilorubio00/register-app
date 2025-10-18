@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:register_app/presentation/config/router/router.dart';
+import 'package:register_app/core/injection_service.dart' as di;
 
-void main() {
+void main() async {
+  await di.setUpLocator();
   runApp(const MainApp());
 }
 

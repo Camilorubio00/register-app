@@ -11,7 +11,7 @@ class WelcomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () => context.go(kNameScreen),
-          child: Text('Ir a Detalle'),
+          child: Text('Ir a Registro'),
         ),
       ),
     );
