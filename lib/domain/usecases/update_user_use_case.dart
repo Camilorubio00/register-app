@@ -8,12 +8,13 @@ class UpdateUserUseCase {
   UpdateUserUseCase({required this.userRepository});
 
   Future<void> call({
+    required String id,
     String? name,
     String? lastname,
     DateTime? birthDate,
     List<AddressModel>? addresses,
   }) async {
-    final currentUserResult = await userRepository.fetchUser();
+    final currentUserResult = await userRepository.fetchUser(id);
     return await currentUserResult.fold(
       (error) async {
         final newUser = UserModel(
@@ -29,6 +30,7 @@ class UpdateUserUseCase {
           name: name,
           lastname: lastname,
           birthDate: birthDate,
+          addresses: addresses
         );
         return await userRepository.saveUser(userModel: updatedUser);
       },

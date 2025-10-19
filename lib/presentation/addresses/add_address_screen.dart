@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register_app/constants/design_constants.dart';
 import 'package:register_app/constants/strings_manager.dart';
-import 'package:register_app/presentation/addresses/bloc/addresses_bloc.dart';
-import 'package:register_app/presentation/addresses/bloc/addresses_event.dart';
-import 'package:register_app/presentation/addresses/bloc/addresses_state.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_bloc.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_event.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_state.dart';
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({super.key});
@@ -31,11 +31,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddressesBloc, AddressesState>(
+    return BlocConsumer<UserRegistrationBloc, UserRegistrationState>(
       listener: (context, state) {
-        if (state is AddressSavedTemporary) {
+        if (state is AddressSaved) {
           context.pop();
-        } else if (state is AddressesError) {
+        } else if (state is UserRegistrationError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
@@ -138,13 +138,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget _textFieldAddAddress() {
     return TextField(
       controller: _streetAddressController,
-      onChanged: (value) => {
-        BlocProvider.of<AddressesBloc>(context).add(
-          ChangeAddress(
-            address: _streetAddressController.text
-          ),
-        )
-      },
+      onChanged: (value) => context.read<UserRegistrationBloc>().add(ChangeAddress(
+          address: _streetAddressController.text
+      )),
       decoration: InputDecoration(
         labelText: kAddressText,
         hintText: kAddressExampleText,
@@ -174,9 +170,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget _buttonSave() {
     return Expanded(
       child: ElevatedButton(
-        onPressed: () {
-          BlocProvider.of<AddressesBloc>(context).add(AddTemporaryAddress());
-        },
+        onPressed: () => context.read<UserRegistrationBloc>().add(SaveAddress()),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: kDimens16),
           shape: RoundedRectangleBorder(

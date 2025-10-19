@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register_app/constants/design_constants.dart';
 import 'package:register_app/constants/strings_manager.dart';
-import 'package:register_app/presentation/addresses/bloc/addresses_bloc.dart';
-import 'package:register_app/presentation/addresses/bloc/addresses_event.dart' show FetchTemporaryAddresses, SaveAddresses, ResetAddresses;
-import 'package:register_app/presentation/addresses/bloc/addresses_state.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/custom_widgets/custom_button_widget.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_bloc.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_event.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_state.dart';
 
 class AddressesScreen extends StatefulWidget {
   const AddressesScreen({super.key});
@@ -18,28 +18,19 @@ class AddressesScreen extends StatefulWidget {
 }
 
 class _AddressesScreenState extends State<AddressesScreen> {
-  final _streetAddressController = TextEditingController();
 
   @override
   void initState() {
-    context.read<AddressesBloc>().add(FetchTemporaryAddresses());
+    context.read<UserRegistrationBloc>().add(FetchAddresses());
     super.initState();
   }
 
   @override
-  void dispose() {
-    _streetAddressController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddressesBloc, AddressesState>(
+    return BlocConsumer<UserRegistrationBloc, UserRegistrationState>(
       listener: (context, state) {
-        if (state is AddressesSaved) {
-          BlocProvider.of<AddressesBloc>(context).add(
-              ResetAddresses()
-          );
+        if (state is UserRegistrationSuccess) {
+          context.read<UserRegistrationBloc>().add(ResetAll());
           context.go(kWelcomeScreen);
         }
       },
@@ -66,9 +57,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   isLoading: false,
                   isEnabled: true,
                   onTapButton: () {
-                    BlocProvider.of<AddressesBloc>(context).add(
-                      SaveAddresses()
-                    );
+                    context.read<UserRegistrationBloc>().add(SaveUser());
                   },
                 )
               ],
@@ -99,8 +88,8 @@ class _AddressesScreenState extends State<AddressesScreen> {
             icon: const Icon(Icons.add, size: 24),
             color: Colors.white,
             onPressed: () {
-              context.push(kAddAddressScreen).then((_) {
-                context.read<AddressesBloc>().add(FetchTemporaryAddresses());
+              context.pushNamed('add').then((_) {
+                context.read<UserRegistrationBloc>().add(FetchAddresses());
               });
             },
           ),
@@ -110,8 +99,8 @@ class _AddressesScreenState extends State<AddressesScreen> {
   }
 
   Widget _addressList(context, state) {
-    if (state is AddressSavedTemporary) {
-      final addresses = state.temporaryAddresses;
+    if (state is AddressesLoaded) {
+      final addresses = state.addresses;
       if (addresses.isEmpty) {
         return Center(
           child: Text(

@@ -6,9 +6,9 @@ import 'package:register_app/constants/strings_manager.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/custom_widgets/custom_button_widget.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';
-import 'package:register_app/presentation/lastname/bloc/lastname_bloc.dart';
-import 'package:register_app/presentation/lastname/bloc/lastname_event.dart';
-import 'package:register_app/presentation/lastname/bloc/lastname_state.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_bloc.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_event.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_state.dart';
 
 class LastnameScreen extends StatefulWidget {
   const LastnameScreen({super.key});
@@ -30,12 +30,7 @@ class _LastnameScreenState extends State<LastnameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<LastnameBloc, LastnameState>(
-        listener: (context, state) {
-          if (state is LastnameSaved) {
-            context.push(kBirthdayScreen);
-          }
-        },
+      body: BlocBuilder<UserRegistrationBloc, UserRegistrationState>(
         builder: (context, state) {
           return _buildForm(context, state);
         }
@@ -43,10 +38,10 @@ class _LastnameScreenState extends State<LastnameScreen> {
     );
   }
 
-  Widget _buildForm(BuildContext context, LastnameState state) {
+  Widget _buildForm(BuildContext context, UserRegistrationState state) {
     return Scaffold(
       backgroundColor: kBeigeBackground,
-      appBar: RegisterAppBar(showBackButton: false),
+      appBar: RegisterAppBar(onBackTap: () => context.pop()),
       body: Container(
         padding: const EdgeInsets.only(bottom: kDimens45, left: kDimens30, right: kDimens30, top: kDimens30),
         child: Column(
@@ -60,9 +55,7 @@ class _LastnameScreenState extends State<LastnameScreen> {
               keyboardType: TextInputType.name,
               maxLength: 30,
               onChanged: (value) {
-                BlocProvider.of<LastnameBloc>(context).add(
-                    ChangeLastname(_lastnameController.text),
-                );
+                context.read<UserRegistrationBloc>().add(SaveLastname(_lastnameController.text));
               },
               textAlign: TextAlign.center,
               decoration: InputDecoration(
@@ -74,13 +67,9 @@ class _LastnameScreenState extends State<LastnameScreen> {
             const Spacer(),
             CustomButtonWidget(
               buttonText: kContinueTitle,
-              isLoading: state is LastnameLoading,
+              isLoading: state is UserRegistrationLoading,
               isEnabled: _lastnameController.text.isNotEmpty,
-              onTapButton: () {
-                BlocProvider.of<LastnameBloc>(context).add(
-                    SaveLastname(_lastnameController.text),
-                );
-              },
+              onTapButton: () => context.push(kBirthdayScreen)
             )
           ],
         ),

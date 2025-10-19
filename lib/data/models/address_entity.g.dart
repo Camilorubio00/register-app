@@ -17,10 +17,10 @@ class AddressEntityAdapter extends TypeAdapter<AddressEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return AddressEntity(
-      description: fields[0] as String?,
-      country: fields[1] as String?,
-      state: fields[2] as String?,
-      city: fields[3] as String?,
+      description: fields[1] as String?,
+      country: fields[2] as String?,
+      state: fields[3] as String?,
+      city: fields[4] as String?,
     );
   }
 
@@ -28,13 +28,13 @@ class AddressEntityAdapter extends TypeAdapter<AddressEntity> {
   void write(BinaryWriter writer, AddressEntity obj) {
     writer
       ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.description)
       ..writeByte(1)
-      ..write(obj.country)
+      ..write(obj.description)
       ..writeByte(2)
-      ..write(obj.state)
+      ..write(obj.country)
       ..writeByte(3)
+      ..write(obj.state)
+      ..writeByte(4)
       ..write(obj.city);
   }
 

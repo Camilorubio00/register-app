@@ -6,9 +6,7 @@ import 'package:register_app/domain/entities/user_model.dart';
 part 'user_entity.g.dart';
 
 @HiveType(typeId: kUserEntityTypeId)
-class UserEntity {
-  @HiveField(0)
-  String? userId;
+class UserEntity extends HiveObject {
   @HiveField(1)
   String? name;
   @HiveField(2)
@@ -19,18 +17,18 @@ class UserEntity {
   List<AddressEntity>? addresses;
 
   UserEntity({
-    this.userId,
     this.name,
     this.lastname,
     this.birthDate,
     this.addresses
   });
 
+  int get id => key as int;
+
   factory UserEntity.fromModel({
     required UserModel userModel
   }){
     return UserEntity(
-        userId: userModel.userId,
         name: userModel.name,
         lastname: userModel.lastname,
         birthDate: userModel.birthDate,

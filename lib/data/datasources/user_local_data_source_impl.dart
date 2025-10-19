@@ -7,23 +7,24 @@ import 'package:register_app/domain/entities/user_model.dart';
 
 class UserLocalDataSourceImpl implements UserLocalDataSource {
 
-  final HiveInterface _hive;
+  final Box<UserEntity> box;
 
-  UserLocalDataSourceImpl({ HiveInterface? hive }) : _hive = hive ?? Hive;
+  UserLocalDataSourceImpl({ required this.box });
   
   @override
   Future<void> saveUser({required UserModel userModel}) async {
-    final Box<UserEntity> userBox = _hive.box(kHiveUserBox);
-    await userBox.clear();
-    final UserEntity userEntity = UserEntity.fromModel(userModel: userModel);
-    await userBox.add(userEntity);
+    try {
+      final UserEntity userEntity = UserEntity.fromModel(userModel: userModel);
+      await box.add(userEntity);
+    } catch (e) {
+      throw Exception('Error al guardar usuario: $e');
+    }
   }
 
   @override
-  Future<Either<String, UserModel>> fetchUser() async {
+  Future<Either<String, UserModel>> fetchUser(String id) async {
     try {
-      final Box<UserEntity> userBox = _hive.box(kHiveUserBox);
-      final userEntity = userBox.get(0);
+      final userEntity = box.get(id);
       if(userEntity != null) {
         final user = UserModel.fromEntity(userEntity: userEntity);
         return Right(user);
@@ -33,5 +34,16 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       return Left('Error al obtener usuario: ${exception.toString()}');
     }
   }
-  
+
+  @override
+  Future<Either<String, List<UserModel>>> fetchUsers() async {
+    try {
+      final userEntityList = box.values.toList();
+      final userModelList = userEntityList.map((model) => UserModel.fromEntity(userEntity: model)).toList();
+      return Right(userModelList);
+    } catch (exception) {
+      return Left('Error al obtener usuario: ${exception.toString()}');
+    }
+  }
+
 }

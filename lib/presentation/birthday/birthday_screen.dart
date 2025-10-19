@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register_app/constants/design_constants.dart';
 import 'package:register_app/constants/strings_manager.dart';
-import 'package:register_app/presentation/birthday/bloc/birthday_bloc.dart';
-import 'package:register_app/presentation/birthday/bloc/birthday_event.dart';
-import 'package:register_app/presentation/birthday/bloc/birthday_state.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/custom_widgets/custom_button_widget.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_bloc.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_event.dart';
+import 'package:register_app/presentation/user_registration/bloc/user_registration_state.dart';
 
 class BirthdayScreen extends StatefulWidget {
   const BirthdayScreen({super.key});
@@ -23,12 +23,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<BirthdayBloc, BirthdayState>(
-        listener: (context, state) {
-          if (state is BirthdaySaved) {
-            context.push(kAddressesScreen);
-          }
-        },
+      body: BlocBuilder<UserRegistrationBloc, UserRegistrationState>(
         builder: (context, state) {
           return _buildLayout(context);
         },
@@ -84,11 +79,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             CustomButtonWidget(
               buttonText: kContinueTitle,
               isEnabled: _selectedDate != null,
-              onTapButton: () {
-                BlocProvider.of<BirthdayBloc>(
-                  context,
-                ).add(SaveBirthday(_selectedDate!));
-              },
+              onTapButton: () => context.push(kAddressesScreen)
             ),
           ],
         ),
@@ -108,7 +99,7 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
       setState(() {
         _selectedDate = picked;
       });
-      BlocProvider.of<BirthdayBloc>(context).add(ChangeBirthday(picked));
+      context.read<UserRegistrationBloc>().add(SaveBirthday(picked));
     }
   }
 }

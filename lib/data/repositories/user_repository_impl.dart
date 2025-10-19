@@ -16,8 +16,13 @@ class UserRepositoryImpl implements UserRepository {
   }
   
   @override
-  Future<Either<String, UserModel>> fetchUser() async {
-    return await userLocalDataSource.fetchUser();
+  Future<Either<String, UserModel>> fetchUser(String id) async {
+    return await userLocalDataSource.fetchUser(id);
+  }
+
+  @override
+  Future<Either<String, List<UserModel>>> fetchUsers() async {
+    return await userLocalDataSource.fetchUsers();
   }
 
 }

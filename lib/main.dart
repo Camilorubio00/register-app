@@ -7,30 +7,33 @@ import 'package:register_app/data/models/user_entity.dart';
 import 'package:register_app/presentation/config/router/router.dart';
 import 'package:register_app/core/injection_service.dart' as di;
 import 'constants/hive_constants.dart';
+import 'data/models/address_entity.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await di.setUpLocator();
-  await initializeHive();
+  final box = await initializeHive();
+  await di.setUpLocator(box: box);
   runApp(const MainApp());
 }
 
-Future<void> initializeHive() async {
+Future<Box<UserEntity>> initializeHive() async {
   final Directory directory = await path_provider.getApplicationDocumentsDirectory();
 
   Hive..init(directory.path)
-    ..registerAdapter(UserEntityAdapter());
+    ..registerAdapter(UserEntityAdapter())
+    ..registerAdapter(AddressEntityAdapter());
 
-  await Hive.openBox<UserEntity>(kHiveUserBox);
+  return await Hive.openBox<UserEntity>(kHiveUserBox);
 }
 
 class MainApp extends StatelessWidget {
+
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: router, 
+      routerConfig: router,
       title: 'Mi App',
     );
   }
