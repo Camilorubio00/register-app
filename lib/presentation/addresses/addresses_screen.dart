@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:register_app/constants/design_constants.dart';
 import 'package:register_app/constants/strings_manager.dart';
 import 'package:register_app/presentation/addresses/bloc/addresses_bloc.dart';
-import 'package:register_app/presentation/addresses/bloc/addresses_event.dart' show FetchTemporaryAddresses;
+import 'package:register_app/presentation/addresses/bloc/addresses_event.dart' show FetchTemporaryAddresses, SaveAddresses, ResetAddresses;
 import 'package:register_app/presentation/addresses/bloc/addresses_state.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/custom_widgets/custom_button_widget.dart';
@@ -22,13 +22,8 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   @override
   void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
     context.read<AddressesBloc>().add(FetchTemporaryAddresses());
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -39,7 +34,15 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddressesBloc, AddressesState>(
+    return BlocConsumer<AddressesBloc, AddressesState>(
+      listener: (context, state) {
+        if (state is AddressesSaved) {
+          BlocProvider.of<AddressesBloc>(context).add(
+              ResetAddresses()
+          );
+          context.go(kWelcomeScreen);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: RegisterAppBar(onBackTap: () => context.pop()),
@@ -63,7 +66,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   isLoading: false,
                   isEnabled: true,
                   onTapButton: () {
-
+                    BlocProvider.of<AddressesBloc>(context).add(
+                      SaveAddresses()
+                    );
                   },
                 )
               ],
@@ -129,6 +134,5 @@ class _AddressesScreenState extends State<AddressesScreen> {
     } else {
         return Container();
     }
-    
   }
 }

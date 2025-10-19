@@ -26,6 +26,7 @@ class AddressesBloc extends Bloc<AddressesEvent, AddressesState> {
     on<FetchTemporaryAddresses>(_onFetchTemporaryAddresses);
     on<SaveAddresses>(_onSaveAddresses);
     on<ChangeAddress>(_onChangeAddress);
+    on<ResetAddresses>(_onResetAddresses);
   }
 
   void _onFetchTemporaryAddresses(FetchTemporaryAddresses event,
@@ -50,7 +51,7 @@ class AddressesBloc extends Bloc<AddressesEvent, AddressesState> {
     );
   }
 
-  Future<void> _onSaveAddresses(SaveAddresses event,
+  void _onSaveAddresses(SaveAddresses event,
       Emitter<AddressesState> emit,) async {
     emit(AddressesLoading());
     final addresses = _addTemporaryAddressUseCase.getTemporaryAddress();
@@ -58,12 +59,22 @@ class AddressesBloc extends Bloc<AddressesEvent, AddressesState> {
     emit(AddressesSaved());
   }
 
-  Future<void> _onChangeAddress(ChangeAddress event,
+  void _onChangeAddress(ChangeAddress event,
       Emitter<AddressesState> emit,) async {
     country = event.country ?? country;
     stateCountry = event.stateCountry ?? stateCountry;
     city = event.city ?? city;
     address = event.address ?? address;
     emit(AddressesChanged());
+  }
+
+  void _onResetAddresses(ResetAddresses event,
+      Emitter<AddressesState> emit,) async {
+    country = kEmptyString;
+    stateCountry = kEmptyString;
+    city = kEmptyString;
+    address = kEmptyString;
+    _addTemporaryAddressUseCase.clearTemporaryAddresses();
+    emit(AddressesCleared());
   }
 }

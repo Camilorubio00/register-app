@@ -16,3 +16,5 @@ class AddTemporaryAddress extends AddressesEvent {}
 class FetchTemporaryAddresses extends AddressesEvent {}
 
 class SaveAddresses extends AddressesEvent {}
+
+class ResetAddresses extends AddressesEvent {}

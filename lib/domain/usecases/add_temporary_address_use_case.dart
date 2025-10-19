@@ -37,4 +37,8 @@ class AddTemporaryAddressUseCase {
   List<AddressModel> getTemporaryAddress() {
     return _temporaryAddresses;
   }
+
+  void clearTemporaryAddresses() {
+    _temporaryAddresses.clear();
+  }
 }

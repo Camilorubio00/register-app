@@ -10,6 +10,8 @@ class AddressesLoading extends AddressesState {}
 
 class AddressesChanged extends AddressesState {}
 
+class AddressesCleared extends AddressesState {}
+
 class AddressSavedTemporary extends AddressesState {
   final List<AddressModel> temporaryAddresses;
   const AddressSavedTemporary(this.temporaryAddresses);
