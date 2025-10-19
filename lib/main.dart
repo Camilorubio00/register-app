@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:register_app/data/models/address_entity.dart';
 import 'package:register_app/data/models/user_entity.dart';
 import 'package:register_app/presentation/config/router/router.dart';
 import 'package:register_app/core/injection_service.dart' as di;
 import 'constants/hive_constants.dart';
-import 'data/models/address_entity.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
