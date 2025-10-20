@@ -1,6 +1,6 @@
 
 abstract class LocationRepository {
-  List<String> getCountries();
-  List<String> getDepartments(String country);
-  List<String> getCities(String department);
+  Future<List<String>> getCountries();
+  Future<List<String>> getDepartments(String country);
+  Future<List<String>> getCities(String department);
 }

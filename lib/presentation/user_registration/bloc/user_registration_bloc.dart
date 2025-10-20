@@ -69,20 +69,10 @@ class UserRegistrationBloc
   void _onLoadCountries(
     LoadCountries event,
     Emitter<UserRegistrationState> emit,
-  ) {
-    final result = _getCountriesUseCase.call();
+  ) async {
+    final result = await _getCountriesUseCase.call();
     _countries = result;
-    emit(
-      AddressFormState(
-        countries: result,
-        selectedCountry: _country,
-        selectedDepartment: _department,
-        selectedCity: _city,
-        departments: _departments,
-        cities: _cities,
-        streetAddress: _address,
-      ),
-    );
+    _updateAddressFormState(emit);
   }
 
   void _onSaveName(SaveName event, Emitter<UserRegistrationState> emit) {
@@ -174,42 +164,27 @@ class UserRegistrationBloc
   void _onChangeCountry(
     ChangeCountry event,
     Emitter<UserRegistrationState> emit,
-  ) {
+  ) async {
     _country = event.country;
+    _department = null;
+    _city = null;
     _cities.clear();
-    final result = _getDepartmentsUseCase.call(event.country);
+    _departments.clear();
+    final result = await _getDepartmentsUseCase.call(event.country);
     _departments = result;
-    emit(
-      AddressFormState(
-        countries: _countries,
-        selectedCountry: _country,
-        selectedDepartment: null,
-        selectedCity: null,
-        departments: result,
-        cities: _cities,
-        streetAddress: _address,
-      ),
-    );
+    _updateAddressFormState(emit);
   }
 
   void _onChangeDepartment(
     ChangeDepartment event,
     Emitter<UserRegistrationState> emit,
-  ) {
+  ) async {
     _department = event.department;
-    final result = _getCitiesUseCase.call(event.department);
+    _cities.clear();
+    final result = await _getCitiesUseCase.call(event.department);
     _cities = result;
-    emit(
-      AddressFormState(
-        countries: _countries,
-        selectedCountry: _country,
-        selectedDepartment: _department,
-        selectedCity: null,
-        departments: _departments,
-        cities: _cities,
-        streetAddress: _address,
-      ),
-    );
+    _city = null;
+    _updateAddressFormState(emit);
   }
 
   void _onChangeCity(
@@ -217,17 +192,7 @@ class UserRegistrationBloc
     Emitter<UserRegistrationState> emit,
   ) {
     _city = event.city;
-    emit(
-      AddressFormState(
-        countries: _countries,
-        selectedCountry: _country,
-        selectedDepartment: _department,
-        selectedCity: _city,
-        departments: _departments,
-        cities: _cities,
-        streetAddress: _address,
-      ),
-    );
+    _updateAddressFormState(emit);
   }
 
   void _onChangeAddress(
@@ -235,17 +200,20 @@ class UserRegistrationBloc
     Emitter<UserRegistrationState> emit,
   ) {
     _address = event.address ?? _address;
-    emit(
-      AddressFormState(
-        countries: _countries,
-        selectedCountry: _country,
-        selectedDepartment: _department,
-        selectedCity: _city,
-        departments: _departments,
-        cities: _cities,
-        streetAddress: _address,
-      ),
+    _updateAddressFormState(emit);
+  }
+
+  void _updateAddressFormState(Emitter<UserRegistrationState> emit,) {
+    final newState = AddressFormState().copyWith(
+      countries: _countries,
+      selectedCountry: _country,
+      selectedDepartment: _department,
+      selectedCity: _city,
+      departments: _departments,
+      cities: _cities,
+      streetAddress: _address,
     );
+    emit(newState);
   }
 
   void _resetAddress() {

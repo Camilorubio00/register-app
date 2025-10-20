@@ -5,18 +5,18 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
   LocationRemoteDataSourceImpl();
 
   @override
-  List<String> getCountries() {
+  Future<List<String>> getCountries() async{
     return LocationData.countries;
   }
 
   @override
-  List<String> getDepartments(String country) {
+  Future<List<String>> getDepartments(String country) async {
     final departments = LocationData.departments[country];
     return departments ?? [];
   }
 
   @override
-  List<String> getCities(String department) {
+  Future<List<String>> getCities(String department) async {
     final cities = LocationData.cities[department];
     return cities ?? [];
   }

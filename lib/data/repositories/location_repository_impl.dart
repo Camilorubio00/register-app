@@ -7,17 +7,17 @@ class LocationRepositoryImpl implements LocationRepository {
   LocationRepositoryImpl({required this.locationRemoteDataSource});
 
   @override
-  List<String> getCountries() {
-    return locationRemoteDataSource.getCountries();
+  Future<List<String>> getCountries() async {
+    return await locationRemoteDataSource.getCountries();
   }
 
   @override
-  List<String> getDepartments(String country) {
-    return locationRemoteDataSource.getDepartments(country);
+  Future<List<String>> getDepartments(String country) async {
+    return await locationRemoteDataSource.getDepartments(country);
   }
 
   @override
-  List<String> getCities(String department) {
-    return locationRemoteDataSource.getCities(department);
+  Future<List<String>> getCities(String department) async {
+    return await locationRemoteDataSource.getCities(department);
   }
 }

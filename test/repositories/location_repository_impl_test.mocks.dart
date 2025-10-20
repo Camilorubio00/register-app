@@ -3,6 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i3;
+
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:register_app/data/datasources/location_remote_data_source.dart'
     as _i2;
@@ -30,29 +32,30 @@ class MockLocationRemoteDataSource extends _i1.Mock
   }
 
   @override
-  List<String> getCountries() => (super.noSuchMethod(
+  _i3.Future<List<String>> getCountries() => (super.noSuchMethod(
         Invocation.method(
           #getCountries,
           [],
         ),
-        returnValue: <String>[],
-      ) as List<String>);
+        returnValue: _i3.Future<List<String>>.value(<String>[]),
+      ) as _i3.Future<List<String>>);
 
   @override
-  List<String> getDepartments(String? country) => (super.noSuchMethod(
+  _i3.Future<List<String>> getDepartments(String? country) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getDepartments,
           [country],
         ),
-        returnValue: <String>[],
-      ) as List<String>);
+        returnValue: _i3.Future<List<String>>.value(<String>[]),
+      ) as _i3.Future<List<String>>);
 
   @override
-  List<String> getCities(String? department) => (super.noSuchMethod(
+  _i3.Future<List<String>> getCities(String? department) => (super.noSuchMethod(
         Invocation.method(
           #getCities,
           [department],
         ),
-        returnValue: <String>[],
-      ) as List<String>);
+        returnValue: _i3.Future<List<String>>.value(<String>[]),
+      ) as _i3.Future<List<String>>);
 }

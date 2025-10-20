@@ -5,7 +5,7 @@ class GetCountriesUseCase {
 
   GetCountriesUseCase({required this.locationRepository});
 
-  List<String> call()  {
-    return locationRepository.getCountries();
+  Future<List<String>> call() async {
+    return await locationRepository.getCountries();
   }
 }

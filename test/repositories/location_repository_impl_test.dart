@@ -16,33 +16,33 @@ void main() {
     repository = LocationRepositoryImpl(locationRemoteDataSource: mockRemoteDataSource);
   });
 
-  test('getCountries from dataSource', () {
+  test('getCountries from dataSource', () async {
     final countries = ['Colombia', 'Argentina'];
-    when(mockRemoteDataSource.getCountries()).thenReturn(countries);
+    when(mockRemoteDataSource.getCountries()).thenAnswer((_) async => countries);
 
-    final result = repository.getCountries();
+    final result = await repository.getCountries();
 
     expect(result, countries);
     verify(mockRemoteDataSource.getCountries()).called(1);
   });
 
-  test('getDepartments from dataSource', () {
+  test('getDepartments from dataSource', () async {
     final departments = ['Antioquia', 'Cundinamarca'];
     const country = 'Colombia';
-    when(mockRemoteDataSource.getDepartments(country)).thenReturn(departments);
+    when(mockRemoteDataSource.getDepartments(country)).thenAnswer((_) async => departments);
 
-    final result = repository.getDepartments(country);
+    final result = await repository.getDepartments(country);
 
     expect(result, departments);
     verify(mockRemoteDataSource.getDepartments(country)).called(1);
   });
 
-  test('getCities from dataSource', () {
+  test('getCities from dataSource', () async {
     final cities = ['Medellín', 'Envigado'];
     const department = 'Antioquia';
-    when(mockRemoteDataSource.getCities(department)).thenReturn(cities);
+    when(mockRemoteDataSource.getCities(department)).thenAnswer((_) async => cities);
 
-    final result = repository.getCities(department);
+    final result = await repository.getCities(department);
 
     expect(result, cities);
     verify(mockRemoteDataSource.getCities(department)).called(1);
