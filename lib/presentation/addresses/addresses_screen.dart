@@ -18,7 +18,6 @@ class AddressesScreen extends StatefulWidget {
 }
 
 class _AddressesScreenState extends State<AddressesScreen> {
-
   @override
   void initState() {
     context.read<UserRegistrationBloc>().add(FetchAddresses());
@@ -48,9 +47,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
             child: Column(
               children: [
                 _addAddressRow(),
-                Expanded(
-                  child: _addressList(context, state),
-                ),
+                Expanded(child: _addressList(context, state)),
                 const SizedBox(height: kDimens12),
                 CustomButtonWidget(
                   buttonText: kSaveAddressesText,
@@ -59,7 +56,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                   onTapButton: () {
                     context.read<UserRegistrationBloc>().add(SaveUser());
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -73,7 +70,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
       children: [
         const Text(
           'Agregar Nueva Dirección',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: kDimens20, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         Spacer(),
@@ -85,7 +82,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: const Icon(Icons.add, size: 24),
+            icon: const Icon(Icons.add, size: kDimens24),
             color: Colors.white,
             onPressed: () {
               context.pushNamed('add').then((_) {
@@ -114,14 +111,21 @@ class _AddressesScreenState extends State<AddressesScreen> {
           itemBuilder: (context, index) {
             final address = addresses[index];
             return ListTile(
-              title: Text(address.description ?? ''),
-              subtitle: Text('${address.description} ${address.description}'),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(address.country),
+                  Text(address.state),
+                  Text(address.city),
+                ],
+              ),
+              subtitle: Text(address.description),
             );
           },
         );
       }
     } else {
-        return Container();
+      return Container();
     }
   }
 }

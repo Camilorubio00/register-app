@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:register_app/constants/hive_constants.dart';
 import 'package:register_app/data/datasources/user_local_data_source.dart';
 import 'package:register_app/data/models/user_entity.dart';
 import 'package:register_app/domain/entities/user_model.dart';

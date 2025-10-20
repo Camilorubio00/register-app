@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register_app/constants/design_constants.dart';
 import 'package:register_app/constants/strings_manager.dart';
+import 'package:register_app/presentation/custom_widgets/custom_dropdown_widget.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';
 import 'package:register_app/presentation/user_registration/bloc/user_registration_bloc.dart';
 import 'package:register_app/presentation/user_registration/bloc/user_registration_event.dart';
@@ -20,6 +21,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   @override
   void initState() {
+    context.read<UserRegistrationBloc>().add(LoadCountries());
     super.initState();
   }
 
@@ -43,7 +45,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: RegisterAppBar(onBackTap: () => context.pop()),
+          appBar: RegisterAppBar(
+            onBackTap: () {
+              context.read<UserRegistrationBloc>().add(Cancel());
+              context.pop();
+            },
+          ),
           backgroundColor: kBeigeBackground,
           body: SingleChildScrollView(
             child: Container(
@@ -58,56 +65,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _titleAddAddress(),
-                  const SizedBox(height: 24),
-                  // País (fijo por ahora)
-                  /*_buildDropdown(
-                        label: 'País',
-                        value: state.selectedCountry,
-                        items: state.countries,
-                        onChanged: (value) {
-                          if (value != null) {
-                            context.read<AddressBloc>().add(SelectCountry(value));
-                          }
-                        },
-                        hint: 'Selecciona un país',
-                      ),*/
-                  Text("Pais"),
-                  const SizedBox(height: 16),
-                  Text("Departamento"),
-                  // Departamento
-                  /*_buildDropdown(
-                        label: 'Departamento',
-                        value: state.selectedDepartment,
-                        items: state.departments,
-                        onChanged: state.selectedCountry == null
-                            ? null
-                            : (value) {
-                                if (value != null) {
-                                  context
-                                      .read<AddressBloc>()
-                                      .add(SelectDepartment(value));
-                                }
-                              },
-                        hint: 'Selecciona un departamento',
-                      ),*/
-                  const SizedBox(height: 16),
-                  Text("Municipio"),
-                  // Municipio
-                  /*_buildDropdown(
-                        label: 'Municipio',
-                        value: state.selectedMunicipality,
-                        items: state.municipalities,
-                        onChanged: state.selectedDepartment == null
-                            ? null
-                            : (value) {
-                                if (value != null) {
-                                  context
-                                      .read<AddressBloc>()
-                                      .add(SelectMunicipality(value));
-                                }
-                              },
-                        hint: 'Selecciona un municipio',
-                      ),*/
+                  const SizedBox(height: kDimens20),
+                  _dropdownCountries(state),
+                  const SizedBox(height: kDimens16),
+                  _dropdownDepartments(state),
+                  const SizedBox(height: kDimens16),
+                  _dropdownMunicipalities(state),
                   const SizedBox(height: kDimens20),
                   _textFieldAddAddress(),
                   const SizedBox(height: kDimens20),
@@ -127,6 +90,51 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     );
   }
 
+  Widget _dropdownCountries(UserRegistrationState state) {
+    return CustomDropdownWidget(
+      fields: state.countries,
+      fieldSelected: state.selectedCountry,
+      textHint: 'Selecciona país',
+      onChanged: (value) {
+        if (value != null) {
+          context.read<UserRegistrationBloc>().add(
+            ChangeCountry(country: value),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _dropdownDepartments(UserRegistrationState state) {
+    return CustomDropdownWidget(
+      fields: state.departments,
+      fieldSelected: state.selectedDepartment,
+      textHint: 'Selecciona departamento',
+      onChanged: (value) {
+        if (value != null) {
+          context.read<UserRegistrationBloc>().add(
+            ChangeDepartment(stateCountry: value),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _dropdownMunicipalities(UserRegistrationState state) {
+    return CustomDropdownWidget(
+      fields: state.municipalities,
+      fieldSelected: state.selectedMunicipality,
+      textHint: 'Selecciona municipio',
+      onChanged: (value) {
+        if (value != null) {
+          context.read<UserRegistrationBloc>().add(
+            ChangeMunicipality(city: value),
+          );
+        }
+      },
+    );
+  }
+
   Widget _titleAddAddress() {
     return const Text(
       kAddNewAddressText,
@@ -138,9 +146,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget _textFieldAddAddress() {
     return TextField(
       controller: _streetAddressController,
-      onChanged: (value) => context.read<UserRegistrationBloc>().add(ChangeAddress(
-          address: _streetAddressController.text
-      )),
+      onChanged: (value) => context.read<UserRegistrationBloc>().add(
+        ChangeAddress(address: _streetAddressController.text),
+      ),
       decoration: InputDecoration(
         labelText: kAddressText,
         hintText: kAddressExampleText,
@@ -155,7 +163,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget _buttonCancel() {
     return Expanded(
       child: OutlinedButton(
-        onPressed: () => context.pop(),
+        onPressed: () {
+          context.read<UserRegistrationBloc>().add(Cancel());
+          context.pop();
+        },
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: kDimens16),
           shape: RoundedRectangleBorder(
@@ -170,7 +181,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget _buttonSave() {
     return Expanded(
       child: ElevatedButton(
-        onPressed: () => context.read<UserRegistrationBloc>().add(SaveAddress()),
+        onPressed: () =>
+            context.read<UserRegistrationBloc>().add(SaveAddress()),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: kDimens16),
           shape: RoundedRectangleBorder(

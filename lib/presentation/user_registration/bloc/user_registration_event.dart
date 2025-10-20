@@ -4,6 +4,8 @@ abstract class UserRegistrationEvent {
 
 class FetchAddresses extends UserRegistrationEvent {}
 
+class LoadCountries extends UserRegistrationEvent {}
+
 class SaveName extends UserRegistrationEvent {
   final String name;
 
@@ -16,13 +18,24 @@ class SaveLastname extends UserRegistrationEvent {
   const SaveLastname(this.lastName);
 }
 
+class ChangeCountry extends UserRegistrationEvent {
+  final String country;
+  const ChangeCountry({ required this.country});
+}
+
+class ChangeDepartment extends UserRegistrationEvent {
+  final String stateCountry;
+  const ChangeDepartment({ required this.stateCountry});
+}
+
+class ChangeMunicipality extends UserRegistrationEvent {
+  final String? city;
+  const ChangeMunicipality({this.city});
+}
+
 class ChangeAddress extends UserRegistrationEvent {
   final String? address;
-  final String? stateCountry;
-  final String? country;
-  final String? city;
-
-  const ChangeAddress({this.address, this.stateCountry, this.country, this.city});
+  const ChangeAddress({this.address});
 }
 
 class SaveBirthday extends UserRegistrationEvent {
@@ -34,5 +47,7 @@ class SaveBirthday extends UserRegistrationEvent {
 class SaveAddress extends UserRegistrationEvent {}
 
 class SaveUser extends UserRegistrationEvent {}
+
+class Cancel extends UserRegistrationEvent {}
 
 class ResetAll extends UserRegistrationEvent {}

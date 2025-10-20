@@ -26,8 +26,8 @@ final router = GoRouter(
       ),
     ),
     ShellRoute(
-      builder: (context, state, child) => BlocProvider<UserRegistrationBloc>(
-        create: (_) => locator<UserRegistrationBloc>(),
+      builder: (context, state, child) => BlocProvider<UserRegistrationBloc>.value(
+        value: locator<UserRegistrationBloc>(),
         child: child,
       ),
       routes: [

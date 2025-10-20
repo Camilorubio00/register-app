@@ -15,6 +15,7 @@ const double kDimens6 = 6;
 const double kDimens12 = 12;
 const double kDimens16 = 16;
 const double kDimens20 = 20;
+const double kDimens24 = 24;
 const double kDimens30 = 30;
 const double kDimens35 = 35;
 const double kDimens40 = 40;
