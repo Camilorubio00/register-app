@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:register_app/constants/design_constants.dart';
+import 'package:register_app/constants/strings_manager.dart';
 import 'package:register_app/presentation/config/router/navigation_constants.dart';
 import 'package:register_app/presentation/config/router/router.dart';
 import 'package:register_app/presentation/custom_widgets/register_app_bar.dart';
 import 'package:register_app/presentation/welcome/bloc/welcome_bloc.dart';
 import 'package:register_app/presentation/welcome/bloc/welcome_event.dart';
 import 'package:register_app/presentation/welcome/bloc/welcome_state.dart';
+import 'package:register_app/presentation/welcome/model/user_ui_model.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -17,7 +19,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> with RouteAware {
-
   @override
   void initState() {
     context.read<WelcomeBloc>().add(FetchUsers());
@@ -61,9 +62,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with RouteAware {
             child: Column(
               children: [
                 _addUserRow(),
-                Expanded(
-                  child: _userList(context, state),
-                )
+                Expanded(child: _userList(context, state)),
               ],
             ),
           ),
@@ -76,20 +75,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> with RouteAware {
     return Row(
       children: [
         const Text(
-          'Agregar un usuario',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          kAddUserText,
+          style: TextStyle(fontSize: kDimens20, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         Spacer(),
         Container(
-          width: 45,
-          height: 45,
+          width: kDimens45,
+          height: kDimens45,
           decoration: BoxDecoration(
             color: kRegisterAppColor,
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: const Icon(Icons.add, size: 24),
+            icon: const Icon(Icons.add, size: kDimens24),
             color: Colors.white,
             onPressed: () {
               context.push(kNameScreen).then((_) {
@@ -107,24 +106,66 @@ class _WelcomeScreenState extends State<WelcomeScreen> with RouteAware {
       if (state.users.isEmpty) {
         return Center(
           child: Text(
-            'No hay usuarios agregados.',
+            kEmptyUsersText,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         );
       } else {
-        return ListView.builder(
+        return ListView.separated(
+          padding: const EdgeInsets.all(kDimens16),
           itemCount: state.users.length,
+          separatorBuilder: (_, __) => const SizedBox(height: kDimens12),
           itemBuilder: (context, index) {
             final user = state.users[index];
-            return ListTile(
-              title: Text(user.name ?? ''),
-              subtitle: Text('${user.lastname} ${user.birthDate}'),
-            );
+            return _cardUser(user);
           },
         );
       }
     } else {
       return Container();
     }
+  }
+
+  Widget _cardUser(UserUiModel userUiModel) {
+    return Card(
+      color: Colors.white70,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(kDimens6),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(kDimens12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${userUiModel.name} ${userUiModel.lastname}',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: kDimens4),
+            Text('$kBirthdateText ${userUiModel.birthDate}'),
+
+            if (userUiModel.addresses != null &&
+                userUiModel.addresses!.isNotEmpty) ...[
+              const SizedBox(height: kDimens12),
+              Text(
+                kAddressesText,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: kDimens4),
+              ...userUiModel.addresses!.map(
+                (addr) => Padding(
+                  padding: const EdgeInsets.only(bottom: kDimens4),
+                  child: Text(
+                    '${addr.country}, ${addr.state}, ${addr.city}, ${addr.description}',
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }

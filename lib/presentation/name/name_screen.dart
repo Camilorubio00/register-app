@@ -18,7 +18,6 @@ class NameScreen extends StatefulWidget {
 }
 
 class _NameScreenState extends State<NameScreen> {
-
   final _nameController = TextEditingController();
 
   @override
@@ -33,8 +32,8 @@ class _NameScreenState extends State<NameScreen> {
       body: BlocBuilder<UserRegistrationBloc, UserRegistrationState>(
         builder: (context, state) {
           return _buildForm(context, state);
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -43,27 +42,21 @@ class _NameScreenState extends State<NameScreen> {
       backgroundColor: kBeigeBackground,
       appBar: RegisterAppBar(showBackButton: false),
       body: Container(
-        padding: const EdgeInsets.only(bottom: kDimens45, left: kDimens30, right: kDimens30, top: kDimens30),
+        padding: const EdgeInsets.only(
+          bottom: kDimens45,
+          left: kDimens30,
+          right: kDimens30,
+          top: kDimens30,
+        ),
         child: Column(
           children: [
-            Text(kEnterNameTitle, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
-            const SizedBox(height: kDimens20),
-            TextFormField(
-              autofocus: true,
-              controller: _nameController,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: kDimens40, fontWeight: FontWeight.w700),
-              keyboardType: TextInputType.name,
-              maxLength: 30,
-              onChanged: (value) {
-                context.read<UserRegistrationBloc>().add(SaveName(_nameController.text),);
-              },
+            Text(
+              kEnterNameTitle,
+              style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                  border: InputBorder.none, hintText: kYourNameText, hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontSize: kDimens40, color: kGreyHintTextColor, fontWeight: FontWeight.bold)),
             ),
+            const SizedBox(height: kDimens20),
+            _textFieldName(),
             const Spacer(),
             CustomButtonWidget(
               buttonText: kContinueTitle,
@@ -72,10 +65,38 @@ class _NameScreenState extends State<NameScreen> {
               onTapButton: () {
                 context.push(kLastnameScreen);
               },
-            )
+            ),
           ],
         ),
-      )
+      ),
+    );
+  }
+
+  Widget _textFieldName() {
+    return TextFormField(
+      autofocus: true,
+      controller: _nameController,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+        fontSize: kDimens40,
+        fontWeight: FontWeight.w700,
+      ),
+      keyboardType: TextInputType.name,
+      maxLength: 30,
+      onChanged: (value) {
+        context.read<UserRegistrationBloc>().add(
+          SaveName(_nameController.text),
+        );
+      },
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: kYourNameText,
+        hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontSize: kDimens40,
+          color: kGreyHintTextColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }

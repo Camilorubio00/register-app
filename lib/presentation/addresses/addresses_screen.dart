@@ -49,14 +49,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                 _addAddressRow(),
                 Expanded(child: _addressList(context, state)),
                 const SizedBox(height: kDimens12),
-                CustomButtonWidget(
-                  buttonText: kSaveAddressesText,
-                  isLoading: false,
-                  isEnabled: true,
-                  onTapButton: () {
-                    context.read<UserRegistrationBloc>().add(SaveUser());
-                  },
-                ),
+                _buttonSave(),
               ],
             ),
           ),
@@ -69,14 +62,14 @@ class _AddressesScreenState extends State<AddressesScreen> {
     return Row(
       children: [
         const Text(
-          'Agregar Nueva Dirección',
+          kAddNewAddressText,
           style: TextStyle(fontSize: kDimens20, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         Spacer(),
         Container(
-          width: 45,
-          height: 45,
+          width: kDimens45,
+          height: kDimens45,
           decoration: BoxDecoration(
             color: kRegisterAppColor,
             shape: BoxShape.circle,
@@ -101,7 +94,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
       if (addresses.isEmpty) {
         return Center(
           child: Text(
-            'No hay direcciones agregadas.',
+            kEmptyAddressesText,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         );
@@ -127,5 +120,16 @@ class _AddressesScreenState extends State<AddressesScreen> {
     } else {
       return Container();
     }
+  }
+
+  Widget _buttonSave() {
+    return CustomButtonWidget(
+      buttonText: kSaveRegisterUserText,
+      isLoading: false,
+      isEnabled: true,
+      onTapButton: () {
+        context.read<UserRegistrationBloc>().add(SaveUser());
+      },
+    );
   }
 }

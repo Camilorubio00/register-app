@@ -18,7 +18,6 @@ class LastnameScreen extends StatefulWidget {
 }
 
 class _LastnameScreenState extends State<LastnameScreen> {
-
   final _lastnameController = TextEditingController();
 
   @override
@@ -33,8 +32,8 @@ class _LastnameScreenState extends State<LastnameScreen> {
       body: BlocBuilder<UserRegistrationBloc, UserRegistrationState>(
         builder: (context, state) {
           return _buildForm(context, state);
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -43,37 +42,59 @@ class _LastnameScreenState extends State<LastnameScreen> {
       backgroundColor: kBeigeBackground,
       appBar: RegisterAppBar(onBackTap: () => context.pop()),
       body: Container(
-        padding: const EdgeInsets.only(bottom: kDimens45, left: kDimens30, right: kDimens30, top: kDimens30),
+        padding: const EdgeInsets.only(
+          bottom: kDimens45,
+          left: kDimens30,
+          right: kDimens30,
+          top: kDimens30,
+        ),
         child: Column(
           children: [
-            Text(kEnterLastnameTitle, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
-            const SizedBox(height: kDimens20),
-            TextFormField(
-              autofocus: true,
-              controller: _lastnameController,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: kDimens40, fontWeight: FontWeight.w700),
-              keyboardType: TextInputType.name,
-              maxLength: 30,
-              onChanged: (value) {
-                context.read<UserRegistrationBloc>().add(SaveLastname(_lastnameController.text));
-              },
+            Text(
+              kEnterLastnameTitle,
+              style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                  border: InputBorder.none, hintText: kYourLastnameText, hintStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontSize: kDimens40, color: kGreyHintTextColor, fontWeight: FontWeight.bold)),
             ),
+            const SizedBox(height: kDimens20),
+            _textFieldLastname(),
             const Spacer(),
             CustomButtonWidget(
               buttonText: kContinueTitle,
               isLoading: state is UserRegistrationLoading,
               isEnabled: _lastnameController.text.isNotEmpty,
-              onTapButton: () => context.push(kBirthdayScreen)
-            )
+              onTapButton: () => context.push(kBirthdayScreen),
+            ),
           ],
         ),
-      )
+      ),
+    );
+  }
+
+  Widget _textFieldLastname() {
+    return TextFormField(
+      autofocus: true,
+      controller: _lastnameController,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+        fontSize: kDimens40,
+        fontWeight: FontWeight.w700,
+      ),
+      keyboardType: TextInputType.name,
+      maxLength: 30,
+      onChanged: (value) {
+        context.read<UserRegistrationBloc>().add(
+          SaveLastname(_lastnameController.text),
+        );
+      },
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: kYourLastnameText,
+        hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontSize: kDimens40,
+          color: kGreyHintTextColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }

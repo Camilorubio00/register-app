@@ -94,7 +94,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     return CustomDropdownWidget(
       fields: state.countries,
       fieldSelected: state.selectedCountry,
-      textHint: 'Selecciona país',
+      textHint: kSelectCountryText,
       onChanged: (value) {
         if (value != null) {
           context.read<UserRegistrationBloc>().add(
@@ -109,7 +109,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     return CustomDropdownWidget(
       fields: state.departments,
       fieldSelected: state.selectedDepartment,
-      textHint: 'Selecciona departamento',
+      textHint: kSelectStateText,
       onChanged: (value) {
         if (value != null) {
           context.read<UserRegistrationBloc>().add(
@@ -124,7 +124,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     return CustomDropdownWidget(
       fields: state.municipalities,
       fieldSelected: state.selectedMunicipality,
-      textHint: 'Selecciona municipio',
+      textHint: kSelectCityText,
       onChanged: (value) {
         if (value != null) {
           context.read<UserRegistrationBloc>().add(
