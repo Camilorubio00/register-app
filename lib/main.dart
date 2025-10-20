@@ -17,9 +17,11 @@ void main() async {
 }
 
 Future<Box<UserEntity>> initializeHive() async {
-  final Directory directory = await path_provider.getApplicationDocumentsDirectory();
+  final Directory directory = await path_provider
+      .getApplicationDocumentsDirectory();
 
-  Hive..init(directory.path)
+  Hive
+    ..init(directory.path)
     ..registerAdapter(UserEntityAdapter())
     ..registerAdapter(AddressEntityAdapter());
 
@@ -27,7 +29,6 @@ Future<Box<UserEntity>> initializeHive() async {
 }
 
 class MainApp extends StatelessWidget {
-
   const MainApp({super.key});
 
   @override
@@ -35,6 +36,20 @@ class MainApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: router,
       title: 'Mi App',
+      theme: _getThemeData(),
+    );
+  }
+
+  ThemeData _getThemeData() {
+    return ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.teal,
+      ),
+      scaffoldBackgroundColor: Colors.grey[100],
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.teal,
+      ),
+      textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.black87)),
     );
   }
 }

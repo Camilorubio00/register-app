@@ -16,6 +16,7 @@ dependencies:
   hive_generator: ^2.0.1
   build_runner: ^2.4.13
   dartz: ^0.10.1
+  mockito: ^5.4.4
 
 dev_dependencies:
   flutter_test:

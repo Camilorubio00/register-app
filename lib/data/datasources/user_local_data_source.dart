@@ -3,6 +3,5 @@ import 'package:register_app/domain/entities/user_model.dart';
 
 abstract class UserLocalDataSource {
   Future<void> saveUser({ required UserModel userModel });
-  Future<Either<String, UserModel>> fetchUser(String id);
   Future<Either<String, List<UserModel>>> fetchUsers();
 }

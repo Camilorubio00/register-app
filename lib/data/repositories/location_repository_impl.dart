@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:register_app/data/datasources/location_remote_data_source.dart';
 import 'package:register_app/domain/repositories/location_repository.dart';
 

@@ -21,20 +21,6 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<Either<String, UserModel>> fetchUser(String id) async {
-    try {
-      final userEntity = box.get(id);
-      if(userEntity != null) {
-        final user = UserModel.fromEntity(userEntity: userEntity);
-        return Right(user);
-      }
-      return Right(UserModel());
-    } catch (exception) {
-      return Left('Error al obtener usuario: ${exception.toString()}');
-    }
-  }
-
-  @override
   Future<Either<String, List<UserModel>>> fetchUsers() async {
     try {
       final userEntityList = box.values.toList();
