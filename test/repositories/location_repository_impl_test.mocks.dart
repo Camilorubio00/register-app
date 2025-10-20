@@ -48,9 +48,9 @@ class MockLocationRemoteDataSource extends _i1.Mock
       ) as List<String>);
 
   @override
-  List<String> getMunicipalities(String? department) => (super.noSuchMethod(
+  List<String> getCities(String? department) => (super.noSuchMethod(
         Invocation.method(
-          #getMunicipalities,
+          #getCities,
           [department],
         ),
         returnValue: <String>[],

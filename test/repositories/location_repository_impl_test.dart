@@ -37,14 +37,14 @@ void main() {
     verify(mockRemoteDataSource.getDepartments(country)).called(1);
   });
 
-  test('getMunicipalities from dataSource', () {
-    final municipalities = ['Medellín', 'Envigado'];
+  test('getCities from dataSource', () {
+    final cities = ['Medellín', 'Envigado'];
     const department = 'Antioquia';
-    when(mockRemoteDataSource.getMunicipalities(department)).thenReturn(municipalities);
+    when(mockRemoteDataSource.getCities(department)).thenReturn(cities);
 
-    final result = repository.getMunicipalities(department);
+    final result = repository.getCities(department);
 
-    expect(result, municipalities);
-    verify(mockRemoteDataSource.getMunicipalities(department)).called(1);
+    expect(result, cities);
+    verify(mockRemoteDataSource.getCities(department)).called(1);
   });
 }

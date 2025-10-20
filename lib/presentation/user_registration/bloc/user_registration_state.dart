@@ -4,10 +4,10 @@ import 'package:register_app/presentation/addresses/model/address_ui_model.dart'
 abstract class UserRegistrationState {
   List<String> get countries => [];
   List<String> get departments => [];
-  List<String> get municipalities => [];
+  List<String> get cities => [];
   String? get selectedCountry => null;
   String? get selectedDepartment => null;
-  String? get selectedMunicipality => null;
+  String? get selectedCity => null;
   String? get streetAddress => null;
   const UserRegistrationState();
 }
@@ -26,7 +26,7 @@ class AddressFormState extends UserRegistrationState {
   final List<String> departments;
 
   @override
-  final List<String> municipalities;
+  final List<String> cities;
 
   @override
   final String? selectedCountry;
@@ -35,7 +35,7 @@ class AddressFormState extends UserRegistrationState {
   final String? selectedDepartment;
 
   @override
-  final String? selectedMunicipality;
+  final String? selectedCity;
 
   @override
   final String? streetAddress;
@@ -48,10 +48,10 @@ class AddressFormState extends UserRegistrationState {
   const AddressFormState({
     this.countries = const [],
     this.departments = const [],
-    this.municipalities = const [],
+    this.cities = const [],
     this.selectedCountry,
     this.selectedDepartment,
-    this.selectedMunicipality,
+    this.selectedCity,
     this.streetAddress,
     this.userName,
     this.userLastname,
@@ -62,15 +62,15 @@ class AddressFormState extends UserRegistrationState {
   bool get canSaveAddress =>
       selectedCountry != null &&
           selectedDepartment != null &&
-          selectedMunicipality != null;
+          selectedCity != null;
 
   AddressFormState copyWith({
     List<String>? countries,
     List<String>? departments,
-    List<String>? municipalities,
+    List<String>? cities,
     String? selectedCountry,
     String? selectedDepartment,
-    String? selectedMunicipality,
+    String? selectedCity,
     String? streetAddress,
     String? userName,
     String? userLastname,
@@ -80,10 +80,10 @@ class AddressFormState extends UserRegistrationState {
     return AddressFormState(
       countries: countries ?? this.countries,
       departments: departments ?? this.departments,
-      municipalities: municipalities ?? this.municipalities,
+      cities: cities ?? this.cities,
       selectedCountry: selectedCountry ?? this.selectedCountry,
       selectedDepartment: selectedDepartment ?? this.selectedDepartment,
-      selectedMunicipality: selectedMunicipality ?? this.selectedMunicipality,
+      selectedCity: selectedCity ?? this.selectedCity,
       streetAddress: streetAddress ?? this.streetAddress,
       userName: userName ?? this.userName,
       userLastname: userLastname ?? this.userLastname,
@@ -91,18 +91,6 @@ class AddressFormState extends UserRegistrationState {
       currentAddresses: currentAddresses ?? this.currentAddresses,
     );
   }
-}
-
-class DepartmentChanged extends UserRegistrationState {
-  final List<String> department;
-  final String? departmentSelected;
-  const DepartmentChanged(this.department, this.departmentSelected);
-}
-
-class MunicipalityChanged extends UserRegistrationState {
-  final List<String> cities;
-  final String? city;
-  const MunicipalityChanged(this.cities, this.city);
 }
 
 class AddressSaved extends UserRegistrationState {}
@@ -123,16 +111,16 @@ class UserRegistrationError extends AddressFormState {
     String? selectedCountry,
     List<String> departments = const [],
     String? selectedDepartment,
-    List<String> municipalities = const [],
-    String? selectedMunicipality,
+    List<String> cities = const [],
+    String? selectedCity,
     String? streetAddress,
   }) : super(
     countries: countries,
     selectedCountry: selectedCountry,
     departments: departments,
     selectedDepartment: selectedDepartment,
-    municipalities: municipalities,
-    selectedMunicipality: selectedMunicipality,
+    cities: cities,
+    selectedCity: selectedCity,
     streetAddress: streetAddress,
   );
 }

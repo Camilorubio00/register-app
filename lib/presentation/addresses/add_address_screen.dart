@@ -70,7 +70,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   const SizedBox(height: kDimens16),
                   _dropdownDepartments(state),
                   const SizedBox(height: kDimens16),
-                  _dropdownMunicipalities(state),
+                  _dropdownCities(state),
                   const SizedBox(height: kDimens20),
                   _textFieldAddAddress(),
                   const SizedBox(height: kDimens20),
@@ -113,22 +113,22 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       onChanged: (value) {
         if (value != null) {
           context.read<UserRegistrationBloc>().add(
-            ChangeDepartment(stateCountry: value),
+            ChangeDepartment(department: value),
           );
         }
       },
     );
   }
 
-  Widget _dropdownMunicipalities(UserRegistrationState state) {
+  Widget _dropdownCities(UserRegistrationState state) {
     return CustomDropdownWidget(
-      fields: state.municipalities,
-      fieldSelected: state.selectedMunicipality,
+      fields: state.cities,
+      fieldSelected: state.selectedCity,
       textHint: kSelectCityText,
       onChanged: (value) {
         if (value != null) {
           context.read<UserRegistrationBloc>().add(
-            ChangeMunicipality(city: value),
+            ChangeCity(city: value),
           );
         }
       },

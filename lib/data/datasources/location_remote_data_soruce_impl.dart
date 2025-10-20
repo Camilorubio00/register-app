@@ -16,8 +16,8 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSource {
   }
 
   @override
-  List<String> getMunicipalities(String department) {
-    final municipalities = LocationData.municipalities[department];
-    return municipalities ?? [];
+  List<String> getCities(String department) {
+    final cities = LocationData.cities[department];
+    return cities ?? [];
   }
 }

@@ -20,4 +20,4 @@ const String kBirthdateText = 'Fecha de nacimiento:';
 const String kAddressesText = 'Direcciones:';
 const String kSelectCountryText = 'Selecciona país';
 const String kSelectStateText = 'Selecciona departamento';
-const String kSelectCityText = 'Selecciona municipio';
+const String kSelectCityText = 'Selecciona ciudad';

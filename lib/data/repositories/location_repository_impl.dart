@@ -17,7 +17,7 @@ class LocationRepositoryImpl implements LocationRepository {
   }
 
   @override
-  List<String> getMunicipalities(String department) {
-    return locationRemoteDataSource.getMunicipalities(department);
+  List<String> getCities(String department) {
+    return locationRemoteDataSource.getCities(department);
   }
 }

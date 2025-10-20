@@ -70,7 +70,7 @@ class LocationData {
     ],
   };
 
-  static final Map<String, List<String>> municipalities = {
+  static final Map<String, List<String>> cities = {
     // Colombia
     'Norte de Santander': [
       'Cúcuta',

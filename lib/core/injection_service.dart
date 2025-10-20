@@ -12,7 +12,7 @@ import 'package:register_app/domain/repositories/user_repository.dart';
 import 'package:register_app/domain/usecases/fetch_users_use_case.dart';
 import 'package:register_app/domain/usecases/get_countries_use_case.dart';
 import 'package:register_app/domain/usecases/get_departments_use_case.dart';
-import 'package:register_app/domain/usecases/get_municipalities_use_case.dart';
+import 'package:register_app/domain/usecases/get_cities_use_case.dart';
 import 'package:register_app/domain/usecases/save_user_use_case.dart';
 import 'package:register_app/presentation/user_registration/bloc/user_registration_bloc.dart';
 import 'package:register_app/presentation/welcome/bloc/welcome_bloc.dart';
@@ -51,8 +51,8 @@ Future<void> setUpLocator({required Box<UserEntity> box}) async {
   locator.registerLazySingleton<GetDepartmentsUseCase>(
         () => GetDepartmentsUseCase(locationRepository: locator<LocationRepository>()),
   );
-  locator.registerLazySingleton<GetMunicipalitiesUseCase>(
-        () => GetMunicipalitiesUseCase(locationRepository: locator<LocationRepository>()),
+  locator.registerLazySingleton<GetCitiesUseCase>(
+        () => GetCitiesUseCase(locationRepository: locator<LocationRepository>()),
   );
 
   // Bloc

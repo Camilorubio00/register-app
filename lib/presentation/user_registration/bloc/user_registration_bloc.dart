@@ -4,7 +4,7 @@ import 'package:register_app/core/injection_service.dart';
 import 'package:register_app/domain/entities/address_model.dart';
 import 'package:register_app/domain/usecases/get_countries_use_case.dart';
 import 'package:register_app/domain/usecases/get_departments_use_case.dart';
-import 'package:register_app/domain/usecases/get_municipalities_use_case.dart';
+import 'package:register_app/domain/usecases/get_cities_use_case.dart';
 import 'package:register_app/domain/usecases/save_user_use_case.dart';
 import 'package:register_app/presentation/addresses/model/address_ui_model.dart';
 import 'package:register_app/presentation/user_registration/bloc/user_registration_event.dart';
@@ -15,16 +15,16 @@ class UserRegistrationBloc
   final SaveUserUseCase _saveUserUseCase;
   final GetCountriesUseCase _getCountriesUseCase;
   final GetDepartmentsUseCase _getDepartmentsUseCase;
-  final GetMunicipalitiesUseCase _getMunicipalitiesUseCase;
+  final GetCitiesUseCase _getCitiesUseCase;
   String? _name;
   String? _lastname;
   DateTime? _birthdate;
 
   List<String> _countries = [];
   List<String> _departments = [];
-  List<String> _municipalities = [];
+  List<String> _cities = [];
   String? _country;
-  String? _stateCountry;
+  String? _department;
   String? _city;
   String? _address;
 
@@ -34,14 +34,14 @@ class UserRegistrationBloc
     SaveUserUseCase? saveUserUseCase,
     GetCountriesUseCase? getCountriesUseCase,
     GetDepartmentsUseCase? getDepartmentsUseCase,
-    GetMunicipalitiesUseCase? getMunicipalitiesUseCase,
+    GetCitiesUseCase? getCitiesUseCase,
   }) : _saveUserUseCase = saveUserUseCase ?? locator<SaveUserUseCase>(),
        _getCountriesUseCase =
            getCountriesUseCase ?? locator<GetCountriesUseCase>(),
        _getDepartmentsUseCase =
            getDepartmentsUseCase ?? locator<GetDepartmentsUseCase>(),
-       _getMunicipalitiesUseCase =
-           getMunicipalitiesUseCase ?? locator<GetMunicipalitiesUseCase>(),
+       _getCitiesUseCase =
+           getCitiesUseCase ?? locator<GetCitiesUseCase>(),
        super(UserRegistrationInitial()) {
     on<FetchAddresses>(_onFetchAddresses);
     on<LoadCountries>(_onLoadCountries);
@@ -52,7 +52,7 @@ class UserRegistrationBloc
     on<SaveUser>(_onSaveUser);
     on<ChangeCountry>(_onChangeCountry);
     on<ChangeDepartment>(_onChangeDepartment);
-    on<ChangeMunicipality>(_onChangeMunicipality);
+    on<ChangeCity>(_onChangeCity);
     on<ChangeAddress>(_onChangeAddress);
     on<Cancel>(_onCancel);
     on<ResetAll>(_onResetAll);
@@ -76,10 +76,10 @@ class UserRegistrationBloc
       AddressFormState(
         countries: result,
         selectedCountry: _country,
-        selectedDepartment: _stateCountry,
-        selectedMunicipality: _city,
+        selectedDepartment: _department,
+        selectedCity: _city,
         departments: _departments,
-        municipalities: _municipalities,
+        cities: _cities,
         streetAddress: _address,
       ),
     );
@@ -112,7 +112,7 @@ class UserRegistrationBloc
 
     final addressModel = AddressModel(
       country: _country,
-      state: _stateCountry,
+      state: _department,
       city: _city,
       description: _address,
     );
@@ -124,7 +124,7 @@ class UserRegistrationBloc
   bool _errorValidations(Emitter<UserRegistrationState> emit) {
     final validations = [
       [_country, 'Agregue país'],
-      [_stateCountry, 'Agregue departamento'],
+      [_department, 'Agregue departamento'],
       [_city, 'Agregue ciudad'],
       [_address, 'Agregue dirección'],
     ];
@@ -136,9 +136,9 @@ class UserRegistrationBloc
           countries: _countries,
           selectedCountry: _country,
           departments: _departments,
-          selectedDepartment: _stateCountry,
-          municipalities: _municipalities,
-          selectedMunicipality: _city,
+          selectedDepartment: _department,
+          cities: _cities,
+          selectedCity: _city,
           streetAddress: _address,
         ));
         return false;
@@ -161,9 +161,9 @@ class UserRegistrationBloc
           countries: _countries,
           selectedCountry: _country,
           departments: _departments,
-          selectedDepartment: _stateCountry,
-          municipalities: _municipalities,
-          selectedMunicipality: _city,
+          selectedDepartment: _department,
+          cities: _cities,
+          selectedCity: _city,
           streetAddress: _address,
         ));
       },
@@ -176,7 +176,7 @@ class UserRegistrationBloc
     Emitter<UserRegistrationState> emit,
   ) {
     _country = event.country;
-    _municipalities.clear();
+    _cities.clear();
     final result = _getDepartmentsUseCase.call(event.country);
     _departments = result;
     emit(
@@ -184,9 +184,9 @@ class UserRegistrationBloc
         countries: _countries,
         selectedCountry: _country,
         selectedDepartment: null,
-        selectedMunicipality: null,
+        selectedCity: null,
         departments: result,
-        municipalities: _municipalities,
+        cities: _cities,
         streetAddress: _address,
       ),
     );
@@ -196,24 +196,24 @@ class UserRegistrationBloc
     ChangeDepartment event,
     Emitter<UserRegistrationState> emit,
   ) {
-    _stateCountry = event.stateCountry;
-    final result = _getMunicipalitiesUseCase.call(event.stateCountry);
-    _municipalities = result;
+    _department = event.department;
+    final result = _getCitiesUseCase.call(event.department);
+    _cities = result;
     emit(
       AddressFormState(
         countries: _countries,
         selectedCountry: _country,
-        selectedDepartment: _stateCountry,
-        selectedMunicipality: null,
+        selectedDepartment: _department,
+        selectedCity: null,
         departments: _departments,
-        municipalities: _municipalities,
+        cities: _cities,
         streetAddress: _address,
       ),
     );
   }
 
-  void _onChangeMunicipality(
-    ChangeMunicipality event,
+  void _onChangeCity(
+    ChangeCity event,
     Emitter<UserRegistrationState> emit,
   ) {
     _city = event.city;
@@ -221,10 +221,10 @@ class UserRegistrationBloc
       AddressFormState(
         countries: _countries,
         selectedCountry: _country,
-        selectedDepartment: _stateCountry,
-        selectedMunicipality: _city,
+        selectedDepartment: _department,
+        selectedCity: _city,
         departments: _departments,
-        municipalities: _municipalities,
+        cities: _cities,
         streetAddress: _address,
       ),
     );
@@ -239,10 +239,10 @@ class UserRegistrationBloc
       AddressFormState(
         countries: _countries,
         selectedCountry: _country,
-        selectedDepartment: _stateCountry,
-        selectedMunicipality: _city,
+        selectedDepartment: _department,
+        selectedCity: _city,
         departments: _departments,
-        municipalities: _municipalities,
+        cities: _cities,
         streetAddress: _address,
       ),
     );
@@ -250,7 +250,7 @@ class UserRegistrationBloc
 
   void _resetAddress() {
     _country = null;
-    _stateCountry = null;
+    _department = null;
     _city = null;
     _address = null;
   }
@@ -264,7 +264,7 @@ class UserRegistrationBloc
   void _onCancel(Cancel event, Emitter<UserRegistrationState> emit) {
     _resetAddress();
     _departments.clear();
-    _municipalities.clear();
+    _cities.clear();
   }
 
   void _onResetAll(ResetAll event, Emitter<UserRegistrationState> emit) {
@@ -273,6 +273,6 @@ class UserRegistrationBloc
     _addresses.clear();
     _countries.clear();
     _departments.clear();
-    _municipalities.clear();
+    _cities.clear();
   }
 }

@@ -40,7 +40,7 @@ class _NameScreenState extends State<NameScreen> {
   Widget _buildForm(BuildContext context, UserRegistrationState state) {
     return Scaffold(
       backgroundColor: kBeigeBackground,
-      appBar: RegisterAppBar(showBackButton: false),
+      appBar: RegisterAppBar(onBackTap: () => context.pop()),
       body: Container(
         padding: const EdgeInsets.only(
           bottom: kDimens45,

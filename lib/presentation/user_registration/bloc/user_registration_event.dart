@@ -24,13 +24,13 @@ class ChangeCountry extends UserRegistrationEvent {
 }
 
 class ChangeDepartment extends UserRegistrationEvent {
-  final String stateCountry;
-  const ChangeDepartment({ required this.stateCountry});
+  final String department;
+  const ChangeDepartment({ required this.department});
 }
 
-class ChangeMunicipality extends UserRegistrationEvent {
+class ChangeCity extends UserRegistrationEvent {
   final String? city;
-  const ChangeMunicipality({this.city});
+  const ChangeCity({this.city});
 }
 
 class ChangeAddress extends UserRegistrationEvent {
