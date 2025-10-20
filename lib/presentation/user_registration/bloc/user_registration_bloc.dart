@@ -271,7 +271,6 @@ class UserRegistrationBloc
     _resetAddress();
     _resetUserInformation();
     _addresses.clear();
-    _countries.clear();
     _departments.clear();
     _cities.clear();
   }
